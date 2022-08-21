@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 
 const express = require('express')
 const session = require('express-session')
@@ -9,12 +9,7 @@ const http = require('http')
 
 const { Issuer, Strategy } = require('openid-client')
 
-const {
-  PORT, URI,
-  MY_OAUTH_HOST,
-  MY_OAUTH_CLIENT_ID: client_id,
-  MY_OAUTH_CLIENT_SECRET: client_secret
-} = process.env
+const { PORT, URI, MY_OAUTH_HOST, MY_OAUTH_CLIENT_ID: client_id, MY_OAUTH_CLIENT_SECRET: client_secret } = process.env
 
 const app = express()
 
@@ -28,9 +23,10 @@ app.use(
 app.use(express.json({ limit: '15mb' }))
 app.use(
   session({
-    secret: 'secret',
+    secret: 'some secret key',
     resave: false,
     saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 }, // 1 hour
   })
 )
 app.use(helmet())
@@ -58,15 +54,18 @@ Issuer.discover(MY_OAUTH_HOST).then(function (oidcIssuer) {
   passport.use(
     'oidc',
     new Strategy({ client, passReqToCallback: true }, (req, tokenSet, userinfo, done) => {
-      console.log('@ passport.use', { tokenSet, userinfo })
-      req.session.tokenSet = tokenSet
-      req.session.userinfo = userinfo
-      return done(null, tokenSet.claims())
+      const claims = tokenSet.claims()
+      console.log('@ passport.use -> req.sessionID', req.sessionID)
+      console.log('@ passport.use -> req.session', req.session)
+      console.log('@ passport.use -> save to req.session.passport.user:', { tokenSet, userinfo, claims })
+      return done(null, { tokenSet, userinfo, claims })
     })
   )
 })
 
-app.get('/login', function (req, res, next) {
+app.get(
+  '/login',
+  function (req, res, next) {
     console.log('@ /login')
     next()
   },
@@ -88,7 +87,8 @@ app.get('/', (req, res) => {
 app.get('/user', (req, res) => {
   console.log('@ /user', req.session)
   res.header('Content-Type', 'application/json')
-  res.end(JSON.stringify({ tokenset: req.session.tokenSet, userinfo: req.session.userinfo }, null, 2))
+  const { tokenSet, userinfo, claims } = req.session.passport.user
+  res.end(JSON.stringify({ tokenSet, userinfo, claims }, null, 2))
 })
 
 http.createServer(app).listen(PORT, () => {
