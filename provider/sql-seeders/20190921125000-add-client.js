@@ -5,11 +5,12 @@ module.exports = {
         id: 'MY_OAUTH_CLIENT_ID',
         data: JSON.stringify({
           client_id: 'MY_OAUTH_CLIENT_ID',
-          grant_types: ['refresh_token', 'authorization_code'],
           client_secret: 'MY_SECRET_IS_1234',
-          redirect_uris: ['http://localhost:4000/login/callback'],
-        })
-      }
+          grant_types: ['refresh_token', 'authorization_code'],
+          redirect_uris: ['http://localhost:4000/login/callback', 'https://oidcdebugger.com/debug'],
+          response_types: ['code', 'id_token', 'code id_token', 'none'],
+        }),
+      },
     ])
   },
   down: async (queryInterface, Sequelize) => {

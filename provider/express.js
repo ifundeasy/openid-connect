@@ -2,22 +2,20 @@
 
 require('dotenv').config();
 
+const { PORT, ISSUER } = process.env;
+
 const path = require('path');
 const url = require('url');
-
 const express = require('express'); // eslint-disable-line import/no-unresolved
 const helmet = require('helmet');
-
 const { Provider } = require('oidc-provider');
 
-const Account = require('./support/account');
 const configuration = require('./support/configuration');
-const routes = require('./routes/express');
-
-const { PORT, ISSUER } = process.env;
+const Account = require('./support/account');
 configuration.findAccount = Account.findAccount;
 
 const app = express();
+const routes = require('./routes/express');
 
 const directives = helmet.contentSecurityPolicy.getDefaultDirectives();
 delete directives['form-action'];

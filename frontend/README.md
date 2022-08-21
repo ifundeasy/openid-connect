@@ -3,7 +3,7 @@
 ## installation
 
 ```sh
-$ cp .env.example && vi .env
+$ cp .env.example .env && vi .env
 $ npm i
 ```
 

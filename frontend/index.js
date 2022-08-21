@@ -38,13 +38,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 passport.serializeUser(function (user, done) {
-  console.log('> serialize user')
-  console.log(user)
+  console.log('@ serialize', user)
   done(null, user)
 })
 passport.deserializeUser(function (user, done) {
-  console.log('> deserialize user')
-  console.log(user)
+  console.log('@ deserialize', user)
   done(null, user)
 })
 
@@ -60,8 +58,7 @@ Issuer.discover(MY_OAUTH_HOST).then(function (oidcIssuer) {
   passport.use(
     'oidc',
     new Strategy({ client, passReqToCallback: true }, (req, tokenSet, userinfo, done) => {
-      console.log('tokenSet', tokenSet)
-      console.log('userinfo', userinfo)
+      console.log('@ passport.use', { tokenSet, userinfo })
       req.session.tokenSet = tokenSet
       req.session.userinfo = userinfo
       return done(null, tokenSet.claims())
@@ -70,13 +67,14 @@ Issuer.discover(MY_OAUTH_HOST).then(function (oidcIssuer) {
 })
 
 app.get('/login', function (req, res, next) {
-    console.log('> start login handler')
+    console.log('@ /login')
     next()
   },
   passport.authenticate('oidc', { scope: 'openid' })
 )
 
 app.get('/login/callback', (req, res, next) => {
+  console.log('@ /login/callback', req.session)
   passport.authenticate('oidc', {
     successRedirect: '/user',
     failureRedirect: '/',
@@ -88,6 +86,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/user', (req, res) => {
+  console.log('@ /user', req.session)
   res.header('Content-Type', 'application/json')
   res.end(JSON.stringify({ tokenset: req.session.tokenSet, userinfo: req.session.userinfo }, null, 2))
 })
