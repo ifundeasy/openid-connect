@@ -1,3 +1,6 @@
+// * This frontend code is based on https://medium.com/@nitesh_17214/how-to-create-oidc-client-in-nodejs-b8ea779e0c64
+// * He also told another way to create an oidc provider https://medium.com/@nitesh_17214/oauth-2-0-authorization-server-using-nodejs-and-expressjs-cf65860fed1e
+
 require('dotenv').config()
 
 const express = require('express')
