@@ -53,7 +53,7 @@ Issuer.discover(MY_OAUTH_HOST).then(function (oidcIssuer) {
     client_id,
     client_secret,
     grant_types: ['authorization_code'],
-    redirect_uris: [`${URL}/login/callback`],
+    redirect_uris: [`${URI}/login/callback`],
     response_types: ['code'],
   })
 

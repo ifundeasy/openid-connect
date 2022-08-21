@@ -22,7 +22,7 @@ let server;
 (async () => {
   // const adapter = require('./adapters/local');
   // const adapter = require('./adapters/mongodb');
-  const adapter = require('./adapters/sequelize');
+  const adapter = require('./adapters/sql');
   await adapter.connect()
 
   const prod = process.env.NODE_ENV === 'production';

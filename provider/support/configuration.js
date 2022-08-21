@@ -1,12 +1,4 @@
 module.exports = {
-  clients: [
-    {
-      client_id: 'MY_OAUTH_CLIENT_ID',
-      client_secret: 'MY_SECRET_IS_1234',
-      grant_types: ['refresh_token', 'authorization_code'],
-      redirect_uris: ['http://localhost:4000/login/callback'],
-    }
-  ],
   interactions: {
     url(ctx, interaction) { // eslint-disable-line no-unused-vars
       return `/interaction/${interaction.uid}`;

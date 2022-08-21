@@ -7,19 +7,12 @@
  * migrations @see https://github.com/Rogger794/node-oidc-provider/tree/examples/example/migrations/sequelize
 */
 
-require('dotenv').config();
-
 // npm i sequelize@^5.21.2
 // npm i sequelize@^6.21.4
 const Sequelize = require('sequelize'); // eslint-disable-line import/no-unresolved
-const { SQL_HOST, SQL_PORT, SQL_DB, SQL_USER, SQL_PASS, SQL_DIALECT } = process.env
+const config = require('../config/sql')
 
-
-const sequelize = new Sequelize(SQL_DB, SQL_USER, SQL_PASS, {
-  host: SQL_HOST,
-  port: SQL_PORT,
-  dialect: SQL_DIALECT
-});
+const sequelize = new Sequelize(config);
 
 const grantable = new Set([
   'AccessToken',
@@ -58,7 +51,7 @@ const models = [
   return map;
 }, new Map());
 
-class SequelizeAdapter {
+class SqlAdapter {
   constructor(name) {
     this.model = models.get(name);
     this.name = name;
@@ -115,10 +108,10 @@ class SequelizeAdapter {
   }
 
   static async connect() {
-    console.log('SequelizeAdapter connecting...')
-    await sequelize.sync();
-    console.log('SequelizeAdapter connected!')
+    console.log('SqlAdapter connecting...')
+    await sequelize.authenticate();
+    console.log('SqlAdapter connected!')
   }
 }
 
-module.exports = SequelizeAdapter;
+module.exports = SqlAdapter;

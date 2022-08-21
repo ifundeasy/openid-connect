@@ -5,7 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ."
+    "start": "nodemon .",
+    "sql:create": "sequelize-cli db:create",
+    "sql:drop": "sequelize-cli db:drop",
+    "sql:migrate": "sequelize-cli db:migrate",
+    "sql:migrate:undo": "sequelize-cli db:migrate:undo",
+    "sql:migrate:undo:all": "sequelize-cli db:migrate:undo:all",
+    "sql:seed:all": "sequelize-cli db:seed:all",
+    "sql:seed:undo": "sequelize-cli db:seed:undo",
+    "sql:seed:undo:all": "sequelize-cli db:seed:undo:all"
   },
   "keywords": [],
   "author": "Afa <ifundeasy@gmail.com>",
@@ -23,6 +31,7 @@
     "nodemon": "^2.0.19",
     "oidc-provider": "^7.11.5",
     "pg": "^8.7.3",
-    "sequelize": "^6.21.4"
+    "sequelize": "^6.21.4",
+    "sequelize-cli": "^6.4.1"
   }
 }
