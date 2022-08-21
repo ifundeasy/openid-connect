@@ -1,5 +1,5 @@
 {
-  "name": "openid-connect-provider",
+  "name": "oidc-provider",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
