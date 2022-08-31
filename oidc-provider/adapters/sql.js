@@ -1,9 +1,9 @@
 /*
  * This is a very rough-edged example, the idea is to still work with the fact that oidc-provider
  * has a rather "dynamic" schema. This example uses sequelize with postgresql, and all dynamic data
- * uses JSON fields. id is set to be the primary key, grantId should be additionaly indexed for
- * models where these fields are set (grantId-able models). userCode should be additionaly indexed
- * for DeviceCode model. uid should be additionaly indexed for Session model. For sequelize
+ * uses JSON fields. id is set to be the primary key, grantId should be additionally indexed for
+ * models where these fields are set (grantId-able models). userCode should be additionally indexed
+ * for DeviceCode model. uid should be additionally indexed for Session model. For sequelize
  * migrations @see https://github.com/Rogger794/node-oidc-provider/tree/examples/example/migrations/sequelize
 */
 
