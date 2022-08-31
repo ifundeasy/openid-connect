@@ -36,11 +36,9 @@ let server;
   const adapter = require('./adapters/sql');
   await adapter.connect()
 
-  const prod = process.env.NODE_ENV === 'production';
-
   const provider = new Provider(ISSUER, { adapter, ...configuration });
 
-  if (prod) {
+  if (process.env.NODE_ENV === 'production') {
     app.enable('trust proxy');
     provider.proxy = true;
 
