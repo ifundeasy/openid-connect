@@ -16,7 +16,6 @@ module.exports = {
   },
   features: {
     devInteractions: { enabled: false }, // defaults to true
-
     deviceFlow: { enabled: true }, // defaults to false
     revocation: { enabled: true }, // defaults to false
   },
