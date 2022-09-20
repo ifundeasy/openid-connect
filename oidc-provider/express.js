@@ -32,8 +32,8 @@ app.set('view engine', 'ejs');
 let server;
 (async () => {
   // const adapter = require('./adapters/local');
-  // const adapter = require('./adapters/mongodb');
-  const adapter = require('./adapters/sql');
+  const adapter = require('./adapters/mongodb');
+  // const adapter = require('./adapters/sql');
   await adapter.connect()
 
   const provider = new Provider(ISSUER, { adapter, ...configuration });
@@ -43,6 +43,12 @@ let server;
     provider.proxy = true;
 
     app.use((req, res, next) => {
+      console.log({
+        headers: req.headers,
+        body: req.body,
+        params: req.params,
+        query: req.query
+      })
       if (req.secure) {
         next();
       } else if (req.method === 'GET' || req.method === 'HEAD') {

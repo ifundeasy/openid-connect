@@ -2,9 +2,9 @@
 
 require('dotenv').config();
 
-// npm i mongodb@^4.3.0
 // npm i mongodb@^4.8.1
 const { MongoClient } = require('mongodb'); // eslint-disable-line import/no-unresolved
+
 const snakeCase = require('lodash.snakecase');
 
 let DB;
@@ -23,24 +23,10 @@ class CollectionSet extends Set {
     super.add(name);
     if (!nu) {
       DB.collection(name).createIndexes([
-        ...(grantable.has(name)
-          ? [{
-            key: { 'payload.grantId': 1 },
-          }] : []),
-        ...(name === 'device_code'
-          ? [{
-            key: { 'payload.userCode': 1 },
-            unique: true,
-          }] : []),
-        ...(name === 'session'
-          ? [{
-            key: { 'payload.uid': 1 },
-            unique: true,
-          }] : []),
-        {
-          key: { expiresAt: 1 },
-          expireAfterSeconds: 0,
-        },
+        ...(grantable.has(name) ? [{ key: { 'payload.grantId': 1 } }] : []),
+        ...(name === 'device_code' ? [{ key: { 'payload.userCode': 1 }, unique: true, }] : []),
+        ...(name === 'session' ? [{ key: { 'payload.uid': 1 }, unique: true, }] : []),
+        { key: { expiresAt: 1 }, expireAfterSeconds: 0, },
       ]).catch(console.error); // eslint-disable-line no-console
     }
   }

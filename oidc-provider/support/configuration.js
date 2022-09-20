@@ -1,7 +1,41 @@
 module.exports = {
+  // clients_: [
+  //   {
+  //     client_id: 'MY_OAUTH_CLIENT_ID',
+  //     client_secret: 'MY_SECRET_IS_1234',
+  //     grant_types: ['authorization_code', 'refresh_token'],
+  //     redirect_uris: ['http://localhost:4000/login/callback', 'https://oidcdebugger.com/debug'],
+  //     response_types: ['code'],
+  //     scope: 'openid offline_access address email phone profile',
+  //     // token_endpoint_auth_method: "none",
+  //   }
+  // ],
+  clients: [
+    {
+      client_id: "app",
+      client_secret: "scorpion",
+      redirect_uris: ["http://localhost:3006/cb"],
+      grant_types: [
+        "authorization_code",
+        // "password",
+        "refresh_token",
+        "client_credentials",
+      ],
+      scope: "openid email profile phone address offline_access",
+    },
+    {
+      client_id: "api",
+      client_secret: "night-wolf",
+      redirect_uris: [],
+      response_types: [],
+      grant_types: ["client_credentials"],
+      scope: "openid email profile phone address",
+    },
+  ],
   interactions: {
-    url(ctx, interaction) { // eslint-disable-line no-unused-vars
-      return `/interaction/${interaction.uid}`;
+    url(ctx, interaction) {
+      // eslint-disable-line no-unused-vars
+      return `/interaction/${interaction.uid}`
     },
   },
   cookies: {
@@ -11,13 +45,22 @@ module.exports = {
     address: ['address'],
     email: ['email', 'email_verified'],
     phone: ['phone_number', 'phone_number_verified'],
-    profile: ['birthdate', 'family_name', 'gender', 'given_name', 'locale', 'middle_name', 'name',
-      'nickname', 'picture', 'preferred_username', 'profile', 'updated_at', 'website', 'zoneinfo'],
-  },
-  features: {
-    devInteractions: { enabled: false }, // defaults to true
-    deviceFlow: { enabled: true }, // defaults to false
-    revocation: { enabled: true }, // defaults to false
+    profile: [
+      'birthdate',
+      'family_name',
+      'gender',
+      'given_name',
+      'locale',
+      'middle_name',
+      'name',
+      'nickname',
+      'picture',
+      'preferred_username',
+      'profile',
+      'updated_at',
+      'website',
+      'zoneinfo',
+    ],
   },
   jwks: {
     keys: [
@@ -32,14 +75,103 @@ module.exports = {
         q: '3I1qeEDslZFB8iNfpKAdWtz_Wzm6-jayT_V6aIvhvMj5mnU-Xpj75zLPQSGa9wunMlOoZW9w1wDO1FVuDhwzeOJaTm-Ds0MezeC4U6nVGyyDHb4CUA3ml2tzt4yLrqGYMT7XbADSvuWYADHw79OFjEi4T3s3tJymhaBvy1ulv8M',
         qi: 'wSbXte9PcPtr788e713KHQ4waE26CzoXx-JNOgN0iqJMN6C4_XJEX-cSvCZDf4rh7xpXN6SGLVd5ibIyDJi7bbi5EQ5AXjazPbLBjRthcGXsIuZ3AtQyR0CEWNSdM7EyM5TRdyZQ9kftfz9nI03guW3iKKASETqX2vh0Z8XRjyU',
         use: 'sig',
-      }, {
-        crv: 'P-256',
-        d: 'K9xfPv773dZR22TVUB80xouzdF7qCg5cWjPjkHyv7Ws',
-        kty: 'EC',
-        use: 'sig',
-        x: 'FWZ9rSkLt6Dx9E3pxLybhdM6xgR5obGsj5_pqmnz5J4',
-        y: '_n8G69C-A2Xl4xUW2lF0i8ZGZnk_KPYrhv4GbTGu5G4',
       },
+      // {
+      //   crv: 'P-256',
+      //   d: 'K9xfPv773dZR22TVUB80xouzdF7qCg5cWjPjkHyv7Ws',
+      //   kty: 'EC',
+      //   use: 'sig',
+      //   x: 'FWZ9rSkLt6Dx9E3pxLybhdM6xgR5obGsj5_pqmnz5J4',
+      //   y: '_n8G69C-A2Xl4xUW2lF0i8ZGZnk_KPYrhv4GbTGu5G4',
+      // },
     ],
   },
-};
+  clientBasedCORS(ctx, origin, client) {
+    // * for list of client id check ../sql-seeders/20190921125000-add-client.js
+    // if (client.clientId === 'MY_OAUTH_CLIENT_ID') {
+    //   return true  
+    // }
+    return true
+  },
+  features: {
+    clientCredentials: { enabled: true },
+    introspection: {
+      enabled: true,
+      allowedPolicy(ctx, client, token) {
+        if (
+          client.introspectionEndpointAuthMethod === "none" &&
+          token.clientId !== ctx.oidc.client?.clientId
+        ) {
+          return false;
+        }
+        return true;
+      },
+    },
+    devInteractions: { enabled: false }, // defaults to true
+    deviceFlow: { enabled: true }, // defaults to false
+    revocation: { enabled: true }, // defaults to false
+    resourceIndicators: {
+      enabled: true,
+      defaultResource(ctx) {
+        return Array.isArray(ctx.oidc.params?.resource)
+          ? ctx.oidc.params?.resource[0]
+          : ctx.oidc.params?.resource;
+      },
+      getResourceServerInfo(ctx, resourceIndicator, client) {
+        console.log(resourceIndicator)
+        return {
+          scope: "api:read offline_access",
+          audience: resourceIndicator,
+          accessTokenTTL: 12 * 60 * 60, // 12 hours
+          accessTokenFormat: 'jwt',
+          jwt: {
+            sign: { alg: 'RS256' },
+          }
+        }
+      },
+      async useGrantedResource(ctx, model) {
+        return true;
+      }
+    },
+  },
+  ttl: {
+    AccessToken: function AccessTokenTTL(ctx, token, client) {
+      if (token.resourceServer) {
+        return token.resourceServer.accessTokenTTL || 60 * 60; // 1 hour in seconds
+      }
+      return 60 * 60; // 1 hour in seconds
+    },
+    AuthorizationCode: 600 /* 10 minutes in seconds */,
+    BackchannelAuthenticationRequest:
+      function BackchannelAuthenticationRequestTTL(ctx, request, client) {
+        if (ctx && ctx.oidc && ctx.oidc.params?.requested_expiry) {
+          return Math.min(10 * 60, ctx.oidc.params?.requested_expiry); // 10 minutes in seconds or requested_expiry, whichever is shorter
+        }
+        return 10 * 60; // 10 minutes in seconds
+      },
+    ClientCredentials: function ClientCredentialsTTL(ctx, token, client) {
+      if (token.resourceServer) {
+        return token.resourceServer.accessTokenTTL || 10 * 60; // 10 minutes in seconds
+      }
+      return 10 * 60; // 10 minutes in seconds
+    },
+    DeviceCode: 600 /* 10 minutes in seconds */,
+    Grant: 1209600 /* 14 days in seconds */,
+    IdToken: 3600 /* 1 hour in seconds */,
+    Interaction: 3600 /* 1 hour in seconds */,
+    RefreshToken: function RefreshTokenTTL(ctx, token, client) {
+      if (
+        ctx &&
+        ctx.oidc.entities.RotatedRefreshToken &&
+        client.applicationType === "web" &&
+        client.tokenEndpointAuthMethod === "none" &&
+        !token.isSenderConstrained()
+      ) {
+        // Non-Sender Constrained SPA RefreshTokens do not have infinite expiration through rotation
+        return ctx.oidc.entities.RotatedRefreshToken.remainingTTL;
+      }
+      return 14 * 24 * 60 * 60; // 14 days in seconds
+    },
+    Session: 1209600 /* 14 days in seconds */,
+  },
+}

@@ -59,7 +59,7 @@ module.exports = (app, provider) => {
       const { uid, prompt, params, session } = await provider.interactionDetails(req, res)
       const client = await provider.Client.find(params.client_id)
 
-      console.log('@ /interaction/:uid', prompt.name, { client, detail: { uid, prompt, params, session }})
+      // console.log('@ /interaction/:uid', prompt.name, { client, detail: { uid, prompt, params, session }})
 
       switch (prompt.name) {
         case 'login': {
@@ -102,17 +102,17 @@ module.exports = (app, provider) => {
     try {
       const { prompt: { name } } = await provider.interactionDetails(req, res)
 
-      console.log('@ /interaction/:uid/login', req.body)
+      // console.log('@ /interaction/:uid/login', req.body)
       assert.equal(name, 'login')
 
       const account = await Account.findAccountByLogin(req.body)
-      console.log('@ /interaction/:uid/login', account, req.body)
+      // console.log('@ /interaction/:uid/login', account, req.body)
       const result = {
         login: {
           accountId: account.accountId,
         },
       }
-      console.log('@ /interaction/:uid/login', result)
+      // console.log('@ /interaction/:uid/login', result)
 
       await provider.interactionFinished(req, res, result, { mergeWithLastSubmission: false })
     } catch (err) {
