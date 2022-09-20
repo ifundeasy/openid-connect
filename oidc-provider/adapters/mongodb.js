@@ -57,8 +57,6 @@ class MongoAdapter {
     collections.add(this.name);
   }
 
-  // NOTE: the payload for Session model may contain client_id as keys, make sure you do not use
-  //   dots (".") in your client_id value charset.
   async upsert(_id, payload, expiresIn) {
     let expiresAt;
 
