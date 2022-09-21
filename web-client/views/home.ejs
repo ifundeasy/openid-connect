@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <%- include('components/head'); -%>
+  <body class="app">
+    <% if (grantTypes.length) { %>
+    <div class="login-card">
+      <h1>Choose grant type:</h1>
+      <ul>
+        <% for (var i = 0; i < grantTypes.length; i++) { %> <% if (grantTypes[i].available) { %>
+        <li>
+          <a href="<%= grantTypes[i].url %>">
+            <span><%= grantTypes[i].name %></span>
+            <span><%= (grantTypes[i].comments ? ' [' + grantTypes[i].comments + ']' : '') %></span>
+          </a>
+        </li>
+        <% }
+      } %>
+      </ul>
+    </div>
+    <% } %> <% if (pages.length) { %>
+    <div class="login-card">
+      <h1>Other page:</h1>
+      <ul>
+        <% for (var i = 0; i < pages.length; i++) { %>
+        <li>
+          <a href="<%= pages[i].url %>">
+            <span><%= pages[i].name %></span>
+            <span><%= (pages[i].comments ? ' [' + pages[i].comments + ']' : '') %></span>
+          </a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+    <% } %>
+  </body>
+</html>

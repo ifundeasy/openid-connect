@@ -5,6 +5,12 @@ This is an example code for implements:
 - Rest API as [resource server](resource-server)
 - Web app as [client](web-client)
 
+## requirements
+- nodejs: 16.16.x
+- postgres: 14.4.x
+- mongodb: 5.09.x
+- asymmetric certificate: see [this](README.md#preparation)
+
 ## preparation
 Generate asymmetric secret key, by running the following command
 ```sh
@@ -16,3 +22,6 @@ Please refer to the documentation for more information
 - [auth-server](auth-server/README.md)
 - [resource-server](resource-server/README.md)
 - [client](web-client/README.md)
+
+## credits
+This project is improved version with using pure koa javascript based on [this](https://github.com/ebrahimmfadae/openid-connect-app)

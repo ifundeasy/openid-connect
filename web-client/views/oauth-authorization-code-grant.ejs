@@ -4,13 +4,15 @@
   <body class="app">
     <div class="login-card">
       <h1><%= title %></h1>
-      <form action="<%= authServerUrl %>/auth" method="post">
+      <form action="<%= authServerUrl %>" method="post">
         <label>Client Id</label>
         <input required name="client_id" value="<%= clientId %>" />
+        <label>Grant Type</label>
+        <input required name="grant_type" value="<%= grantType %>" />
         <label>Resource</label>
-        <input name="resource" value="<%= apiUrl %>/pi" />
+        <input name="resource" value="<%= apiUrl %>" />
         <label>Response Type</label>
-        <input required name="response_type" value="code" />
+        <input required name="response_type" value="<%= responseType %>" />
         <label>Redirect URI</label>
         <input required name="redirect_uri" value="<%= callbackUrl %>" />
         <label>Scope</label>
@@ -23,6 +25,9 @@
         <input required name="code_challenge_method" value="<%= codeChallengeMethod %>" />
 
         <button type="submit" class="login login-submit">Grant Access</button>
+      </form>
+      <form action="/">
+        <button type="submit" class="home home-button">Back to Home</button>
       </form>
     </div>
   </body>

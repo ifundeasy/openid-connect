@@ -4,13 +4,18 @@
   <body class="app">
     <div class="login-card">
       <h1><%= title %></h1>
-      <form autocomplete="off" action="<%= authServerUrl %>/users" method="post">
+      <form autocomplete="off" action="<%= authServerUrl %>" method="post">
+        <label>Access Token (client_credentials)</label>
+        <input id="token" required name="token" placeholder="Token" />
         <label>Username</label>
         <input required type="text" name="username" placeholder="username" />
         <label>Password</label>
         <input required type="password" name="password" placeholder="and password" />
 
         <button type="submit" class="login login-submit">Register</button>
+      </form>
+      <form action="/">
+        <button type="submit" class="home home-button">Back to Home</button>
       </form>
     </div>
   </body>

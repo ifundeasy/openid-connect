@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,100);
+/* @import url(https://fonts.googleapis.com/css?family=Roboto:400,100); */
 
 body {
   font-family: "Roboto", sans-serif;
@@ -14,7 +14,8 @@ body.app {
   padding: 40px;
   padding-top: 0px;
   padding-bottom: 10px;
-  width: 274px;
+  min-width: 320px;
+  max-width: 520px;
   background-color: #f7f7f7;
   margin: 0 auto 10px;
   border-radius: 2px;
@@ -27,9 +28,16 @@ body.app {
 }
 
 .login-card h1 {
+  font-size: 25px !important;
   font-weight: 100;
-  text-align: center;
   font-size: 2.3em;
+}
+
+.login-card h1 span {
+  font-size: 50%;
+  font-family:'Courier New', Courier, monospace;
+  margin-left: 5px;
+  vertical-align: super
 }
 
 .login-card button {
@@ -67,6 +75,22 @@ body.app {
   color: #fff;
   text-shadow: 0 1px rgba(0, 0, 0, 0.1);
   background-color: #4d90fe;
+}
+
+.home {
+  text-align: center;
+  font-size: 14px;
+  font-family: "Arial", sans-serif;
+  font-weight: 700;
+  height: 36px;
+  padding: 0 8px;
+}
+
+.home-button {
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #fea54d;
 }
 
 .login-card a {

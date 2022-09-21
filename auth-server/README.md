@@ -1,4 +1,4 @@
-# oidc-provider
+# auth-server
 
 ## installation
 
@@ -15,3 +15,8 @@ npm run sql:seed:all
 ```bash
 npm start
 ```
+
+## todo
+1. When request data to resource-server: pick correct scopes
+2. When using JWT as access_token: no data inserted to AccessToken, AuthorizationCode, DeviceCodes, or RefreshToken
+3. When adapter is MongoDB: Need initial clients for mongodb (seeder)

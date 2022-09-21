@@ -5,12 +5,13 @@ const instance = require('oidc-provider/lib/helpers/weak_cache')
 const dpopValidate = require('oidc-provider/lib/helpers/validate_dpop')
 const resolveResource = require('oidc-provider/lib/helpers/resolve_resource')
 
-const accountService = require('./service.account')
-const { Middleware } = require('koa')
+const { Account } = require('../utils/account')
 
 const gty = 'password'
 const parameters = ['username', 'password', 'resource', 'scope']
+
 const passwordHandler = async function (ctx, next) {
+  console.log(12323, ctx.request)
   const {
     issueRefreshToken,
     conformIdTokenClaims,
@@ -29,8 +30,8 @@ const passwordHandler = async function (ctx, next) {
 
   const params = ctx.oidc.params
 
-  const doc = await accountService.get(params.username)
-  if (doc.password !== params.password) {
+  const doc = await Account.findAccount(ctx, params.username)
+  if (doc.profile.password !== params.password) {
     throw new InvalidGrant('password grant invalid')
   }
 

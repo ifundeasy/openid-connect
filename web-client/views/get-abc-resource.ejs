@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <%- include('components/head'); -%>
+  <body class="app">
+    <div class="login-card">
+      <h1><%= title %></h1>
+      <form autocomplete="off">
+        <label>Access Token</label>
+        <input id="token" required name="token" placeholder="Token" />
+        <p id="data" style="margin-top: 0">Value: -</p>
+
+        <button type="button" class="login login-submit" onclick="onClick()">Fetch</button>
+      </form>
+      <form action="/">
+        <button type="submit" class="home home-button">Back to Home</button>
+      </form>
+    </div>
+  </body>
+  <script>
+    async function onClick() {
+      try {
+        const response = await fetch('<%= apiUrl %>', {
+          headers: {
+            ['Authorization']: `Bearer ${document.getElementById('token').value}`,
+          },
+        })
+        if (response.status === 401) {
+          return alert('You are not authorized to access "abc" resource.')
+        } else if (response.status !== 200) {
+          return alert('Failed to fetch "abc" resource.')
+        }
+        const data = await response.text()
+        document.getElementById('data').innerText = `Value: ${data}`
+      } catch (error) {
+        alert('Error encountered.')
+      }
+    }
+  </script>
+</html>

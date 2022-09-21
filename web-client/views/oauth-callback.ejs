@@ -3,7 +3,7 @@
   <%- include('components/head'); -%>
   <body class="app">
     <div class="login-card">
-      <h1><%= title %></h1>
+      <h1><%= title %><span>[manual trigger]</span></h1>
       <form autocomplete="off" action="<%= authServerUrl %>/token" method="post">
         <label>Client Id</label>
         <input required name="client_id" value="<%= clientId %>" />
@@ -23,6 +23,9 @@
         <input required name="code_challenge_method" value="<%= codeChallengeMethod %>" />
 
         <button type="submit" class="login login-submit">Issue Token</button>
+      </form>
+      <form action="/">
+        <button type="submit" class="home home-button">Back to Home</button>
       </form>
     </div>
   </body>

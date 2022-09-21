@@ -5,29 +5,32 @@
     <div class="login-card">
       <h1><%= title %></h1>
       <form autocomplete="off">
-        <label>Token</label>
+        <label>Access Token</label>
         <input id="token" required name="token" placeholder="Token" />
-        <p id="pi" style="margin-top: 0">Value: -</p>
+        <p id="data" style="margin-top: 0">Value: -</p>
 
         <button type="button" class="login login-submit" onclick="onClick()">Fetch</button>
+      </form>
+      <form action="/">
+        <button type="submit" class="home home-button">Back to Home</button>
       </form>
     </div>
   </body>
   <script>
     async function onClick() {
       try {
-        const response = await fetch('<%= apiUrl %>/pi', {
+        const response = await fetch('<%= apiUrl %>', {
           headers: {
             ['Authorization']: `Bearer ${document.getElementById('token').value}`,
           },
         })
         if (response.status === 401) {
-          return alert('You are not authorized to access PI.')
+          return alert('You are not authorized to access "xyz" resource.')
         } else if (response.status !== 200) {
-          return alert(' Failed to fetch PI.')
+          return alert('Failed to fetch "xyz" resource.')
         }
-        const pi = await response.text()
-        document.getElementById('pi').innerText = `Value: ${pi}`
+        const data = await response.text()
+        document.getElementById('data').innerText = `Value: ${data}`
       } catch (error) {
         alert('Error encountered.')
       }

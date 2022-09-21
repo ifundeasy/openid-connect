@@ -2,27 +2,48 @@
 
 require('dotenv').config();
 
-const { PORT, BASE_URL } = process.env;
-
 const path = require('path');
 const { promisify } = require('util');
 const render = require('koa-ejs');
 const helmet = require('helmet');
-const { Provider, Configuration } = require('oidc-provider');
+const { Provider } = require('oidc-provider');
 
 const { gty, parameters, passwordHandler } = require("./grant.password");
 const routes = require('../src/routes');
 const configuration = require('../config/oidc');
 const Account = require('../utils/account');
-configuration.findAccount = Account.findAccount;
+const JwkImporter = require('../utils/jwk-importer');
+
+const { NODE_ENV, PORT, BASE_URL, ADAPTER } = process.env;
+const isProd = NODE_ENV === 'production';
 
 module.exports = async () => {
-  // const adapter = require('../adapters/local');
-  // const adapter = require('../adapters/mongodb');
-  const adapter = require('../adapters/sql');
-  await adapter.connect()
+  let adapter;
+  switch (ADAPTER) {
+    case 'sql':
+      adapter = require('../adapters/sql');
+      await adapter.connect()
+      break;
+    case 'mongodb':
+      adapter = require('../adapters/mongodb');
+      await adapter.connect()
+      break;
+    default:
+      adapter = require('../adapters/local');
+      break;
+  }
 
-  const prod = process.env.NODE_ENV === 'production';
+  const jwkImporter = new JwkImporter();
+  const privateJwk1 = await jwkImporter.private(
+    path.join(__dirname, '../certificates/private.pkcs8.key'),
+    'RS256'
+  );
+  configuration.findAccount = Account.findAccount;
+  // * for example value please refer to ../.data/jwks.js
+  configuration.jwks = {
+    // * You can use multiple asymmetric keys https://github.com/panva/node-oidc-provider/tree/main/docs#jwks
+    keys: [privateJwk1]
+  }
 
   const provider = new Provider(BASE_URL, { adapter, ...configuration });
   provider.registerGrantType(gty, passwordHandler, parameters);
@@ -45,7 +66,7 @@ module.exports = async () => {
     return next();
   });
 
-  if (prod) {
+  if (isProd) {
     provider.proxy = true;
     provider.use(async (ctx, next) => {
       if (ctx.secure) {

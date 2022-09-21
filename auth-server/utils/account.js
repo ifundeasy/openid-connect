@@ -1,13 +1,16 @@
-const store = new Map();
-const logins = new Map();
 const { nanoid } = require('nanoid');
+
+const data = require('../.data/accounts');
+
+const accounts = new Map();
+const logins = new Map();
 
 class Account {
   constructor(id, profile) {
     // console.log('% constructor', arguments)
     this.accountId = id || nanoid();
     this.profile = profile;
-    store.set(this.accountId, this);
+    accounts.set(this.accountId, this);
   }
 
   /**
@@ -87,9 +90,11 @@ class Account {
     // token is a reference to the token used for which a given account is being loaded,
     //   it is undefined in scenarios where account claims are returned from authorization endpoint
     // ctx is the koa request context
-    if (!store.get(id)) new Account(id); // eslint-disable-line no-new
-    return store.get(id);
+    if (!accounts.get(id)) new Account(id); // eslint-disable-line no-new
+    return accounts.get(id);
   }
 }
 
-module.exports = Account;
+data.forEach(el => accounts.set(el.username, new Account(null, el)));
+
+module.exports = { Account, accounts };

@@ -2,8 +2,8 @@ module.exports = [
   {
     client_id: 'web-app-as-client',
     client_secret: 'web-app-as-client',
-    // redirect_uris: ['http://localhost:4000/login/callback', 'https://oidcdebugger.com/debug'],
-    redirect_uris: ['http://localhost:4000/login/callback'],
+    // redirect_uris: ['http://localhost:4000/oauth-callback', 'https://oidcdebugger.com/debug'],
+    redirect_uris: ['http://localhost:4000/oauth-callback'],
     grant_types: [
       'authorization_code',
       "password",

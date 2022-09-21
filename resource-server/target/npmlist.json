@@ -1,0 +1,1 @@
+{"version":"1.0.0","name":"resource-server","dependencies":{"@koa/cors":{"version":"3.4.1"},"dotenv":{"version":"16.0.2"},"jsonwebtoken":{"version":"8.5.1"},"koa-router":{"version":"12.0.0"},"koa":{"version":"2.13.4"},"node-fetch":{"version":"3.2.10"},"nodemon":{"version":"2.0.20"},"npm-check-updates":{"version":"16.2.1"}}}
