@@ -24,4 +24,5 @@ Please refer to the documentation for more information
 - [client](web-client/README.md)
 
 ## credits
-This project is improved version with using pure koa javascript based on [this](https://github.com/ebrahimmfadae/openid-connect-app)
+This project are improved version from [ebrahimmfadae/openid-connect-app](https://github.com/ebrahimmfadae/openid-connect-app),
+within pure javascript and koa
