@@ -9,10 +9,10 @@ This is an example code for implements:
 - nodejs: 16.16.x
 - postgres: 14.4.x
 - mongodb: 5.09.x
-- asymmetric certificate: see [this](README.md#preparation)
+- asymmetric certificate: see [preparation](#preparation) section
 
 ## preparation
-Generate asymmetric secret key, by running the following command
+Generate asymmetric credential, by running the following command
 ```sh
 bash ./asymmetric-keypair.sh 2048
 ```
@@ -25,4 +25,4 @@ Please refer to the documentation for more information
 
 ## credits
 This project are improved version from [ebrahimmfadae/openid-connect-app](https://github.com/ebrahimmfadae/openid-connect-app),
-within pure javascript and koa
+with using koa and pure javascript
