@@ -1,4 +1,7 @@
-trash/
+**/trash/
+*/certificates/private.key
+*/certificates/private.pkcs8.key
+*/certificates/public.key
 
 # Logs
 logs

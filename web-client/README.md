@@ -1,4 +1,4 @@
-# openid-client
+# web-client
 
 ## installation
 
