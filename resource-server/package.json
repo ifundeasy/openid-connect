@@ -1,0 +1,14 @@
+{
+  "name": "resource-server",
+  "version": "1.0.0",
+  "description": "openid client as resource server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon .",
+    "update": "ncu -u && npm i"
+  },
+  "keywords": [],
+  "author": "Afa <ifundeasy@gmail.com>",
+  "license": "ISC"
+}
