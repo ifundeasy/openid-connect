@@ -2,33 +2,32 @@
 
 require('dotenv').config();
 
+const { PORT, BASE_URL } = process.env;
+
 const path = require('path');
 const { promisify } = require('util');
-
 const render = require('koa-ejs');
 const helmet = require('helmet');
+const { Provider, Configuration } = require('oidc-provider');
 
-const { Provider } = require('oidc-provider');
-
-const Account = require('./support/account');
-const configuration = require('./support/configuration');
-const routes = require('./routes/koa');
-
-const { PORT, ISSUER } = process.env;
+const { gty, parameters, passwordHandler } = require("./grant.password");
+const routes = require('../src/routes');
+const configuration = require('../config/oidc');
+const Account = require('../utils/account');
 configuration.findAccount = Account.findAccount;
 
-let server;
-
-(async () => {
-  // const adapter = require('./adapters/local');
-  // const adapter = require('./adapters/mongodb');
-  const adapter = require('./adapters/sql');
+module.exports = async () => {
+  // const adapter = require('../adapters/local');
+  // const adapter = require('../adapters/mongodb');
+  const adapter = require('../adapters/sql');
   await adapter.connect()
 
   const prod = process.env.NODE_ENV === 'production';
-  const provider = new Provider(ISSUER, { adapter, ...configuration });
+
+  const provider = new Provider(BASE_URL, { adapter, ...configuration });
+  provider.registerGrantType(gty, passwordHandler, parameters);
+
   const directives = helmet.contentSecurityPolicy.getDefaultDirectives();
-  
   delete directives['form-action'];
 
   const pHelmet = promisify(helmet({
@@ -67,14 +66,13 @@ let server;
     cache: false,
     viewExt: 'ejs',
     layout: '_layout',
-    root: path.join(__dirname, 'views'),
+    root: path.join(__dirname, '../views'),
   });
+
   provider.use(routes(provider).routes());
   server = provider.listen(PORT, () => {
-    console.log(`application is listening on port ${PORT}, check its /.well-known/openid-configuration`);
+    console.log(`application is listening on port ${PORT}, check its ${BASE_URL}/.well-known/openid-configuration`);
   });
-})().catch((err) => {
-  if (server && server.listening) server.close();
-  console.error(err);
-  process.exitCode = 1;
-});
+
+  return server;
+}

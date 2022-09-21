@@ -1,4 +1,5 @@
 /* eslint-disable no-console, max-len, camelcase, no-unused-vars */
+
 const { strict: assert } = require('assert')
 const querystring = require('querystring')
 const crypto = require('crypto')
@@ -9,7 +10,7 @@ const bodyParser = require('koa-body')
 const Router = require('koa-router')
 
 // const { renderError } = require('../../lib/helpers/defaults')();
-const Account = require('../support/account')
+const Account = require('../utils/account')
 
 const keys = new Set()
 const debug = (obj) =>

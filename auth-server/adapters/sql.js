@@ -108,9 +108,9 @@ class SqlAdapter {
   }
 
   static async connect() {
-    console.log('SqlAdapter connecting...')
+    console.log('sql connecting...')
     await sequelize.authenticate();
-    console.log('SqlAdapter connected!')
+    console.log('sql connected!')
   }
 }
 

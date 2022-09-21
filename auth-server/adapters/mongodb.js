@@ -113,10 +113,10 @@ class MongoAdapter {
   // This is not part of the required or supported API, all initialization should happen before
   // you pass the adapter to `new Provider`
   static async connect() {
-    console.log('MongoAdapter connecting...')
+    console.log('mongodb connecting...')
     const connection = await MongoClient.connect(process.env.MONGODB_URI);
     DB = connection.db(connection.s.options.dbName);
-    console.log('MongoAdapter connected!')
+    console.log('mongodb connected!')
   }
 }
 
