@@ -10,8 +10,7 @@ const { Account } = require('../utils/account')
 const gty = 'password'
 const parameters = ['username', 'password', 'resource', 'scope']
 
-const passwordHandler = async function (ctx, next) {
-  console.log(12323, ctx.request)
+const handler = async function (ctx, next) {
   const {
     issueRefreshToken,
     conformIdTokenClaims,
@@ -51,7 +50,6 @@ const passwordHandler = async function (ctx, next) {
     accountId: account.accountId,
     sessionUid: session.uid,
   })
-
   if (params?.resource) {
     grant.addResourceScope(params?.resource, params.scope)
   } else {
@@ -217,4 +215,4 @@ const passwordHandler = async function (ctx, next) {
   await next()
 }
 
-module.exports = { gty, parameters, passwordHandler }
+module.exports = { gty, parameters, handler }

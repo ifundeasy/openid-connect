@@ -1,3 +1,5 @@
+const { renderError } = require('oidc-provider/lib/helpers/defaults')();
+
 const bodyParser = require('koa-body')({
   text: false,
   json: false,
@@ -13,7 +15,7 @@ const noCache = (SessionNotFound) => async (ctx, next) => {
     if (err instanceof SessionNotFound) {
       ctx.status = err.status
       const { message: error, error_description } = err
-      // renderError(ctx, { error, error_description }, err);
+      renderError(ctx, { error, error_description }, err);
       console.log({ error, error_description })
     } else {
       throw err

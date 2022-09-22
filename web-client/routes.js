@@ -9,21 +9,23 @@ module.exports = () => {
 
   const {
     home,
-    oauthAuthorizationCodeGrant,
-    oauthPasswordGrant,
-    oauthCallback,
-    oauthUserRegistration,
-    oauthClientCredentials,
+    openid,
+    authorizationCode,
+    password,
+    callback,
+    registration,
+    clientCredentials,
     getXResource,
     getYResource
   } = appController()
 
   router.get('/', home)
-  router.get('/oauth-authorization-code-grant', oauthAuthorizationCodeGrant)
-  router.get('/oauth-password-grant', oauthPasswordGrant)
-  router.get(callbackPath, oauthCallback)
-  router.get('/oauth-user-registration', oauthUserRegistration)
-  router.get('/oauth-client-credentials-grant', oauthClientCredentials)
+  router.get('/openid', openid)
+  router.get('/authorization-code', authorizationCode)
+  router.get('/password', password)
+  router.get(callbackPath, callback)
+  router.get('/registration', registration)
+  router.get('/client-credentials', clientCredentials)
   router.get('/abc', getXResource)
   router.get('/xyz', getYResource)
 

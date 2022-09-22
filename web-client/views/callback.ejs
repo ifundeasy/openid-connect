@@ -4,13 +4,13 @@
   <body class="app">
     <div class="login-card">
       <h1><%= title %><span>[manual trigger]</span></h1>
-      <form autocomplete="off" action="<%= authServerUrl %>/token" method="post">
+      <form autocomplete="off" action="<%= authServerUrl %>" method="post">
         <label>Client Id</label>
         <input required name="client_id" value="<%= clientId %>" />
         <label>Client Secret</label>
         <input required name="client_secret" value="<%= clientSecret %>" />
         <label>Grant Type</label>
-        <input required name="grant_type" value="authorization_code" />
+        <input required name="grant_type" value="<%= grantType %>" />
         <label>Code</label>
         <input required name="code" value="<%= code %>" />
         <label>Redirect URI</label>
@@ -31,6 +31,8 @@
   </body>
   <script>
     ;(async function () {
+      console.log("<%= code %>")
+      console.log(window.sessionStorage.getItem('codeVerifier'))
       document.getElementById('codeVerifierInput').value = window.sessionStorage.getItem('codeVerifier')
     })()
   </script>

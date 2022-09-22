@@ -8,7 +8,7 @@ module.exports = {
   port: env.SQL_PORT,
   dialect: env.SQL_DIALECT,
   logConnection: env.NODE_ENV !== 'production',
-  logQueryParameters: false,
+  logQueryParameters: env.NODE_ENV !== 'production',
   migrationStorage: 'sequelize',
   migrationStorageTableName: '_meta',
   seederStorage: 'sequelize',

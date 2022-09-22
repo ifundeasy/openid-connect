@@ -4,7 +4,6 @@ const crypto = require('crypto')
 const { inspect } = require('util')
 const isEmpty = require('lodash.isempty')
 
-// const { renderError } = require('../../lib/helpers/defaults')();
 const { Account } = require('../utils/account')
 
 const keys = new Set()

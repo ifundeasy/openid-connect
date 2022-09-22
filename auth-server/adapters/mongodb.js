@@ -118,6 +118,16 @@ class MongoAdapter {
     DB = connection.db(connection.s.options.dbName);
     console.log('mongodb connected!')
   }
+
+  static async seedClient(data) {
+    Promise.all(data.map(payload => {
+      DB.collection('client').updateOne(
+        { _id: payload.client_id },
+        { $setOnInsert: { payload  } },
+        { upsert: true }
+      )
+    }))
+  }
 }
 
 module.exports = MongoAdapter;

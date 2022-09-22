@@ -1,9 +1,5 @@
 /* eslint-disable-line no-unused-vars */
 
-const defaultClients = require("../.data/clients");
-
-const { ADAPTER } = process.env;
-
 const Config = {
   interactions: {
     url(ctx, interaction) {
@@ -67,20 +63,21 @@ const Config = {
       },
       getResourceServerInfo(ctx, resourceIndicator, client) {
         // TODO: When request data to resource-server: pick correct scopes
-        // const scope = ctx.oidc.params.scope.split(' ')
-        //   .filter(s => s.indexOf(':') > -1)
-        //   .concat('offline_access').join(' ')
+        const scope = ctx.oidc.params.scope.split(' ').filter(s => s.indexOf(':') > -1).concat('offline_access').join(' ');
+        
+        const options = {
+          scope: 'api:read offline_access',
+        };
+
+        // options.audience = resourceIndicator
 
         // TODO: When using JWT as access_token: no data inserted to AccessToken, AuthorizationCode, DeviceCodes, or RefreshToken
-        return {
-          scope: 'api:read offline_access',
-          audience: resourceIndicator,
-          accessTokenTTL: 12 * 60 * 60, // 12 hours
-          accessTokenFormat: 'jwt',
-          jwt: {
-            sign: { alg: 'RS256' },
-          }
-        }
+        // options.accessTokenTTL = 60 * 60, // 1 hours
+        // options.jwt = {
+        //   sign: { alg: 'RS256' },
+        // }
+
+        return options
       },
       async useGrantedResource(ctx, model) {
         return true;
@@ -89,9 +86,7 @@ const Config = {
   },
   ttl: {
     AccessToken: function AccessTokenTTL(ctx, token, client) {
-      if (token.resourceServer) {
-        return token.resourceServer.accessTokenTTL || 60 * 60; // 1 hour in seconds
-      }
+      if (token.resourceServer) return token.resourceServer.accessTokenTTL;
       return 60 * 60; // 1 hour in seconds
     },
     AuthorizationCode: 600 /* 10 minutes in seconds */,
@@ -128,16 +123,5 @@ const Config = {
     Session: 1209600 /* 14 days in seconds */,
   },
 };
-
-switch (ADAPTER) {
-  case "sql":
-    break;
-  case "mongodb":
-    // TODO: When adapter is MongoDB: Need initial clients for mongodb (seeder)
-    break;
-  default:
-    Config.clients = defaultClients;
-    break
-}
 
 module.exports = Config
