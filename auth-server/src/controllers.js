@@ -1,33 +1,36 @@
-
 const { strict: assert } = require('assert')
 const crypto = require('crypto')
 const { inspect } = require('util')
 const isEmpty = require('lodash.isempty')
 
-const { Account } = require('../utils/account')
+const Account = require('../utils/account')
 
 const keys = new Set()
-const debug = (obj) => new URLSearchParams(
-  Object.entries(obj).reduce((acc, [key, value]) => {
-    keys.add(key)
-    if (isEmpty(value)) return acc
-    acc[key] = inspect(value, { depth: null })
-    return acc
-  }, {}),
-  '<br/>',
-  ': ',
-  {
-    encodeURIComponent(value) {
-      return keys.has(value) ? `<strong>${value}</strong>` : value
-    },
-  }
-).toString()
+const debug = (obj, text) => {
+  if (!text) return JSON.stringify(obj, 0, 2);
+  return (new URLSearchParams(
+    Object.entries(obj).reduce((acc, [key, value]) => {
+      keys.add(key)
+      if (isEmpty(value)) return acc
+      acc[key] = inspect(value, { depth: null })
+      return acc
+    }, {}),
+    '<br/>',
+    ': ',
+    {
+      encodeURIComponent(value) {
+        return keys.has(value) ? `<strong>${value}</strong>` : value
+      },
+    }
+  ).toString())
+}
+  
 
 const registration = async (ctx, next) => {
-  const { username, password } = ctx.request.body;
-  new Account(username, { username, password });
+  const { username, password } = ctx.request.body
+  new Account(username, { username, password })
 
-  ctx.message = "User successfully created.";
+  ctx.message = 'User successfully created.'
 }
 
 const interaction = (provider) => async (ctx, next) => {

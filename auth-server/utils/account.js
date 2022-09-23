@@ -1,16 +1,15 @@
+// TODO: delete this file when we have a better solution for Account access.
+
+const store = new Map();
+const logins = new Map();
 const { nanoid } = require('nanoid');
 
-const data = require('../.data/accounts');
-
-const accounts = new Map();
-const logins = new Map();
-
-class Account {
+module.exports = class Account {
   constructor(id, profile) {
     // console.log('% constructor', arguments)
     this.accountId = id || nanoid();
     this.profile = profile;
-    accounts.set(this.accountId, this);
+    store.set(this.accountId, this);
   }
 
   /**
@@ -76,7 +75,7 @@ class Account {
     return logins.get(id);
   }
 
-  static async findAccountByLogin({ username, password } = payload) {
+  static async findAccountByLogin({ username, password }) {
     // console.log('% findAccountByLogin', arguments)
     if (!logins.get(username)) {
       logins.set(username, new Account(username));
@@ -90,11 +89,14 @@ class Account {
     // token is a reference to the token used for which a given account is being loaded,
     //   it is undefined in scenarios where account claims are returned from authorization endpoint
     // ctx is the koa request context
-    if (!accounts.get(id)) new Account(id); // eslint-disable-line no-new
-    return accounts.get(id);
+    if (!store.get(id)) {
+      const profile = ctx.oidc.body || {};
+      const { username, password } = profile
+
+      if (username && password) new Account(id, { username, password })
+      else new Account(id);
+    }
+    
+    return store.get(id);
   }
 }
-
-data.forEach(el => accounts.set(el.username, new Account(null, el)));
-
-module.exports = { Account, accounts };

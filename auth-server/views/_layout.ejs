@@ -133,7 +133,6 @@
         color: #999;
       }
       .grant-debug {
-        text-align: center;
         font-family: Fixed, monospace;
         width: 100%;
         font-size: 12px;
@@ -176,27 +175,27 @@
       <details>
         <summary style="text-align: center;">(Click to expand) DEBUG information</summary>
         <div>
-          <strong>uid</strong>: <%= uid %>
+          <strong>INTERACTION ID</strong>: <%= uid %>
         </div>
 
         <% if (session) { %>
         <div>
           SESSION <br>
          ========= <br>
-          <%- session %>
+          <pre><%- session %></pre>
         </div>
         <% } %>
 
         <div>
-          PARAMS <br>
-         ======== <br>
-          <%- dbg.params %>
+          REQUESTED (PAYLOAD OR QUERY STRING) <br>
+         =========== <br>
+          <pre><%- dbg.params %></pre>
         </div>
 
         <div>
           PROMPT <br>
          ======== <br>
-          <%- dbg.prompt %>
+          <pre><%- dbg.prompt %></pre>
         </div>
       </details>
     </div>

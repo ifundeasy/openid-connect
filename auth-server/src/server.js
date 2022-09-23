@@ -11,7 +11,7 @@ const { Provider } = require('oidc-provider')
 
 const defaultClients = require('../.data/clients')
 
-const passwordGrant = require('./password')
+const passwordGrant = require('./grant/password')
 const routes = require('../src/routes')
 const configuration = require('../config/oidc')
 const Account = require('../utils/account')
@@ -31,7 +31,6 @@ module.exports = async () => {
       adapter = require('../adapters/mongodb')
       await adapter.connect()
       await adapter.seedClient(defaultClients)
-      // configuration.clients = defaultClients
       break
     default:
       adapter = require('../adapters/local')

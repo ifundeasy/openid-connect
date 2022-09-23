@@ -5,7 +5,7 @@ const instance = require('oidc-provider/lib/helpers/weak_cache')
 const dpopValidate = require('oidc-provider/lib/helpers/validate_dpop')
 const resolveResource = require('oidc-provider/lib/helpers/resolve_resource')
 
-const { Account } = require('../utils/account')
+const Account = require('../../utils/account')
 
 const gty = 'password'
 const parameters = ['username', 'password', 'resource', 'scope']

@@ -16,6 +16,7 @@ module.exports = () => ({
         { url: `${BASE_URI}/abc`, name: 'Get abc resource', comments: 'using token introspection' },
         { url: `${BASE_URI}/xyz`, name: 'Get xyz resource', comments: 'public key decoding' },
         { url: `${BASE_URI}/registration`, name: 'User registration', comments: '' }
+        // TODO: Add page for handling: device auth, user info, refresh token, logout, token introspection, token revocation
       ]
     })
   },
@@ -27,7 +28,7 @@ module.exports = () => ({
       grantType: 'authorization_code',
       responseType: 'code',
       callbackUrl: AUTH_CLIENT_CALLBACK,
-      scopes: 'openid offline_access address email phone profile api:read',
+      scopes: 'openid offline_access address email phone profile',
       prompt: 'consent',
       codeChallengeMethod,
     })

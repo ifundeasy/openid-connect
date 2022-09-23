@@ -63,7 +63,7 @@ const Config = {
       },
       getResourceServerInfo(ctx, resourceIndicator, client) {
         // TODO: When request data to resource-server: pick correct scopes
-        const scope = ctx.oidc.params.scope.split(' ').filter(s => s.indexOf(':') > -1).concat('offline_access').join(' ');
+        // const scope = ctx.oidc.params.scope.split(' ').filter(s => s.indexOf(':') > -1).concat('offline_access').join(' ');
         
         const options = {
           scope: 'api:read offline_access',
@@ -73,6 +73,7 @@ const Config = {
 
         // TODO: When using JWT as access_token: no data inserted to AccessToken, AuthorizationCode, DeviceCodes, or RefreshToken
         // options.accessTokenTTL = 60 * 60, // 1 hours
+        // options.accessTokenFormat = 'jwt';
         // options.jwt = {
         //   sign: { alg: 'RS256' },
         // }
@@ -122,6 +123,18 @@ const Config = {
     },
     Session: 1209600 /* 14 days in seconds */,
   },
+  async renderError(ctx, out, error) {
+    console.error('@ renderError', out)
+    console.error('@ renderError', error)
+    ctx.type = 'json';
+    ctx.body = {
+      out,
+      error: {
+        message: error.message,
+        stack: JSON.stringify(error.stack)
+      }
+    };
+  }
 };
 
 module.exports = Config

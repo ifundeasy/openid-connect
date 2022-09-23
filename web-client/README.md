@@ -12,3 +12,7 @@ npm i
 ```sh
 npm start
 ```
+
+## todo
+
+1. Add page for handling: device auth, user info, refresh token, logout, token introspection, token revocation
