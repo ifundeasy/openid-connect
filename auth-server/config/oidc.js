@@ -62,21 +62,31 @@ const Config = {
           : ctx.oidc.params?.resource;
       },
       getResourceServerInfo(ctx, resourceIndicator, client) {
-        // TODO: When request data to resource-server: pick correct scopes
-        // const scope = ctx.oidc.params.scope.split(' ').filter(s => s.indexOf(':') > -1).concat('offline_access').join(' ');
-        
-        const options = {
-          scope: 'api:read offline_access',
-        };
+        // console.debug(ctx.oidc)
+        console.debug({
+          url: ctx.request.url,
+          resourceIndicator,
+          params: ctx.oidc.params,
+          body: ctx.oidc.body
+        })
 
-        // options.audience = resourceIndicator
+        const options = {};
+        if (resourceIndicator) options.audience = resourceIndicator
+        if (ctx.oidc.params.scope) {
+          options.scope = ctx.oidc.params.scope.split(' ').filter(s => s.indexOf(':') > -1).concat('offline_access').join(' ');
+        }
 
-        // TODO: When using JWT as access_token: no data inserted to AccessToken, AuthorizationCode, DeviceCodes, or RefreshToken
-        // options.accessTokenTTL = 60 * 60, // 1 hours
-        // options.accessTokenFormat = 'jwt';
-        // options.jwt = {
-        //   sign: { alg: 'RS256' },
-        // }
+        options.accessTokenTTL = 60 * 60; // 1 hours
+
+        // TODO: Resource server should be make to dynamic
+        if (resourceIndicator) {
+          if (resourceIndicator === 'http://localhost:3002/xyz') {
+            options.accessTokenFormat = 'jwt';
+            options.jwt = {
+              sign: { alg: 'RS256' },
+            }
+          }
+        }
 
         return options
       },

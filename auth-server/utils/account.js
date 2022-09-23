@@ -1,4 +1,4 @@
-// TODO: delete this file when we have a better solution for Account access.
+// ! Delete this file when we have a better solution for Account management
 
 const store = new Map();
 const logins = new Map();

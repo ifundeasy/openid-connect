@@ -9,7 +9,6 @@ module.exports = () => {
 
   const {
     home,
-    openid,
     authorizationCode,
     password,
     callback,
@@ -20,7 +19,6 @@ module.exports = () => {
   } = appController()
 
   router.get('/', home)
-  router.get('/openid', openid)
   router.get('/authorization-code', authorizationCode)
   router.get('/password', password)
   router.get(callbackPath, callback)

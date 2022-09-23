@@ -6,7 +6,6 @@ module.exports = () => ({
     return ctx.render('home', {
       title: 'Home',
       grantTypes: [
-        { url: `${BASE_URI}/openid`, name: 'Openid', available: true, comments: '' },
         { url: `${BASE_URI}/authorization-code`, name: 'Authorization code', available: true, comments: '' },
         { url: `${BASE_URI}/client-credentials`, name: 'Client credentials', available: true, comments: '' },
         { url: `${BASE_URI}/implicit`, name: 'implicit', available: false, comments: '' },
@@ -20,19 +19,6 @@ module.exports = () => ({
       ]
     })
   },
-  openid: async (ctx) => {
-    return ctx.render('openid', {
-      title: 'OpenID Connect',
-      authServerUrl: `${AUTH_HOST}/auth`,
-      clientId: AUTH_CLIENT_ID,
-      grantType: 'authorization_code',
-      responseType: 'code',
-      callbackUrl: AUTH_CLIENT_CALLBACK,
-      scopes: 'openid offline_access address email phone profile',
-      prompt: 'consent',
-      codeChallengeMethod,
-    })
-  },
   authorizationCode: async (ctx) => {
     return ctx.render('authorization-code', {
       title: 'Authorization code',
@@ -41,7 +27,11 @@ module.exports = () => ({
       grantType: 'authorization_code',
       responseType: 'code',
       callbackUrl: AUTH_CLIENT_CALLBACK,
-      apiUrl: `${RESOURCE_HOST}/abc`,
+      apiUrl: [
+        '',
+        `${RESOURCE_HOST}/abc`,
+        `${RESOURCE_HOST}/xyz`
+      ],
       scopes: 'openid offline_access api:read',
       prompt: 'consent',
       codeChallengeMethod,
@@ -54,7 +44,11 @@ module.exports = () => ({
       clientId: AUTH_CLIENT_ID,
       clientSecret: AUTH_CLIENT_SECRET,
       grantType: 'password',
-      apiUrl: `${RESOURCE_HOST}/abc`,
+      apiUrl: [
+        '',
+        `${RESOURCE_HOST}/abc`,
+        `${RESOURCE_HOST}/xyz`
+      ],
       scopes: 'openid offline_access api:read',
       prompt: 'consent',
       username: 'sample',
@@ -73,7 +67,6 @@ module.exports = () => ({
         clientSecret: AUTH_CLIENT_SECRET,
         grantType: 'authorization_code',
         callbackUrl: AUTH_CLIENT_CALLBACK,
-        scopes: 'openid offline_access api:read',
         codeChallengeMethod,
       })
     }

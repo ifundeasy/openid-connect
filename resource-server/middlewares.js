@@ -64,8 +64,7 @@ const selfAuthenticate = async (ctx, next) => {
   const { exp, aud = '' } = decoded
   const now = new Date().getTime() / 1000;
 
-  // Resource URI and audience (aud) must be equal
-  if ((now < exp) && (aud.trim() === ctx.request.href.split('?')[0])) {
+  if ((exp ? now < exp : true) && (aud.trim() === ctx.request.href.split('?')[0])) {
     ctx.state.session = decoded
     await next()
   } else {
