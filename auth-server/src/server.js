@@ -62,6 +62,18 @@ module.exports = async () => {
     })
   )
 
+  const saveJWT = async function(ctx, next) {
+    await next();
+    try {
+      if (ctx.body.access_token.length >= 100) {
+        console.log(ctx.body)
+      }
+    } catch (error) {
+      //
+    }
+  }
+  provider.app.middleware.unshift(saveJWT)
+  
   provider.use(logger())
   provider.use(async (ctx, next) => {
     const origSecure = ctx.req.secure
