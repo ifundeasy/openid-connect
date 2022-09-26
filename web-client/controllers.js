@@ -10,6 +10,7 @@ module.exports = () => ({
         { url: `${BASE_URI}/client-credentials`, name: 'Client credentials', available: true, comments: '' },
         { url: `${BASE_URI}/implicit`, name: 'implicit', available: false, comments: '' },
         { url: `${BASE_URI}/password`, name: 'Password', available: true, comments: 'legacy' },
+        { url: `${BASE_URI}/refresh-token`, name: 'Refresh Token', available: true },
       ],
       pages: [
         { url: `${BASE_URI}/abc`, name: 'Get abc resource', comments: 'using token introspection' },
@@ -85,6 +86,16 @@ module.exports = () => ({
       clientSecret: AUTH_CLIENT_SECRET,
       grantType: 'client_credentials',
       scopes: 'openid',
+    })
+  },
+  refreshToken: async (ctx) => {
+    return ctx.render('refresh-token', {
+      title: 'Refresh Token',
+      authServerUrl: `${AUTH_HOST}/token`,
+      clientId: AUTH_CLIENT_ID,
+      clientSecret: AUTH_CLIENT_SECRET,
+      grantType: 'refresh_token',
+      refreshToken: ''
     })
   },
   getXResource: async (ctx) => {

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <%- include('components/head'); -%>
+  <body class="app">
+    <div class="login-card">
+      <h1><%= title %></h1>
+      <form autocomplete="off" action="<%= authServerUrl %>" method="post">
+        <label>Client Id</label>
+        <input required name="client_id" value="<%= clientId %>" />
+        <label>Client Secret</label>
+        <input required name="client_secret" value="<%= clientSecret %>" />
+        <label>Grant Type</label>
+        <input required name="grant_type" value="<%= grantType %>" />
+        <label>Refresh Token</label>
+        <input required name="refresh_token" value="<%= refreshToken %>" />
+        <button type="submit" class="login login-submit">Issue Token</button>
+      </form>
+      <form action="/">
+        <button type="submit" class="home home-button">Back to Home</button>
+      </form>
+    </div>
+  </body>
+</html>
