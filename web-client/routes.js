@@ -14,6 +14,7 @@ module.exports = () => {
     callback,
     registration,
     clientCredentials,
+    refreshToken,
     getXResource,
     getYResource
   } = appController()
@@ -24,6 +25,7 @@ module.exports = () => {
   router.get(callbackPath, callback)
   router.get('/registration', registration)
   router.get('/client-credentials', clientCredentials)
+  router.get('/refresh-token', refreshToken)
   router.get('/abc', getXResource)
   router.get('/xyz', getYResource)
 
