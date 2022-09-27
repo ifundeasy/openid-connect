@@ -80,7 +80,7 @@ const Config = {
 
         // TODO: Resource server should be make to dynamic
         if (resourceIndicator) {
-          if (resourceIndicator === 'http://localhost:3002/xyz') {
+          if (resourceIndicator === 'http://localhost:3001/xyz') {
             options.accessTokenFormat = 'jwt';
             options.jwt = {
               sign: { alg: 'RS256' },
