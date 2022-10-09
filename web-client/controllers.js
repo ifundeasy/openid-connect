@@ -1,5 +1,5 @@
 const codeChallengeMethod = 'S256'
-const { BASE_URI, AUTH_HOST, AUTH_CLIENT_ID, AUTH_CLIENT_SECRET, AUTH_CLIENT_CALLBACK, RESOURCE_HOST } = process.env
+const { BASE_URI, AUTH_HOST, AUTH_CLIENT_ID, AUTH_CLIENT_SECRET, AUTH_CLIENT_CALLBACK, RESOURCE_HOST, AUTH_CLIENT_DEFAULT_SCOPE } = process.env
 
 module.exports = () => ({
   home: async (ctx) => {
@@ -33,7 +33,7 @@ module.exports = () => ({
         `${RESOURCE_HOST}/abc`,
         `${RESOURCE_HOST}/xyz`
       ],
-      scopes: 'openid offline_access api:read',
+      scopes: AUTH_CLIENT_DEFAULT_SCOPE + ' api:read',
       prompt: 'consent',
       codeChallengeMethod,
     })
@@ -50,7 +50,7 @@ module.exports = () => ({
         `${RESOURCE_HOST}/abc`,
         `${RESOURCE_HOST}/xyz`
       ],
-      scopes: 'openid offline_access api:read',
+      scopes: AUTH_CLIENT_DEFAULT_SCOPE + ' api:read',
       prompt: 'consent',
       username: 'sample',
       password: 'pass',
