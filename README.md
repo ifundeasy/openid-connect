@@ -21,6 +21,7 @@ bash ./asymmetric-keypair.sh 2048
 Please refer to the documentation for more information
 - [auth-server](auth-server/README.md)
 - [resource-server](resource-server/README.md)
+- [playground](playground/README.md)
 - [client](web-client/README.md)
 
 ## credits
