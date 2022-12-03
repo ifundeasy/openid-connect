@@ -1,4 +1,4 @@
-# web-client
+# playground
 
 ## installation
 

@@ -1,5 +1,5 @@
 {
-  "name": "web-client",
+  "name": "playground",
   "version": "1.0.0",
   "description": "openid client as public",
   "main": "index.js",
