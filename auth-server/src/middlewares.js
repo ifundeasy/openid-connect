@@ -1,13 +1,9 @@
-const { renderError } = require('oidc-provider/lib/helpers/defaults')();
-
-const bodyParser = require('koa-body')({
-  text: false,
-  json: false,
-  patchNode: true,
-  patchKoa: true,
-})
+const { koaBody } = require('koa-body')
 
 const noCache = (SessionNotFound) => async (ctx, next) => {
+  const { default: RenderError } = await import('oidc-provider/lib/helpers/defaults.js');
+  const renderError = RenderError()
+
   ctx.set('cache-control', 'no-cache, no-store')
   try {
     await next()
@@ -34,4 +30,13 @@ const onlyClient = (provider) => async (ctx, next) => {
   }
 }
 
-module.exports = { bodyParser, noCache, onlyClient }
+module.exports = {
+  bodyParser: koaBody({
+    text: false,
+    json: false,
+    patchNode: true,
+    patchKoa: true,
+  }),
+  noCache,
+  onlyClient
+}

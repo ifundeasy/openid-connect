@@ -7,7 +7,6 @@ const { promisify } = require('util')
 const render = require('koa-ejs')
 const logger = require('koa-logger')
 const helmet = require('helmet')
-const { Provider } = require('oidc-provider')
 
 const defaultClients = require('../.data/clients')
 
@@ -47,6 +46,7 @@ module.exports = async () => {
     keys: [privateJwk1],
   }
 
+  const { default: Provider } = await import('oidc-provider')
   const provider = new Provider(BASE_URL, { adapter, ...configuration })
   provider.registerGrantType(passwordGrant.gty, passwordGrant.handler, passwordGrant.parameters)
 
@@ -107,7 +107,8 @@ module.exports = async () => {
     root: path.join(__dirname, '../views'),
   })
 
-  provider.use(routes(provider).routes())
+  const router = await routes(provider);
+  provider.use(router.routes())
   server = provider.listen(PORT, () => {
     console.log(`application is listening on port ${PORT}, check its ${BASE_URL}/.well-known/openid-configuration`)
   })

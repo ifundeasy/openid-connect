@@ -2,12 +2,12 @@
 
 const store = new Map();
 const logins = new Map();
-const { nanoid } = require('nanoid');
+const { v4 } = require('uuid');
 
 module.exports = class Account {
   constructor(id, profile) {
     // console.log('% constructor', arguments)
-    this.accountId = id || nanoid();
+    this.accountId = id || v4();
     this.profile = profile;
     store.set(this.accountId, this);
   }

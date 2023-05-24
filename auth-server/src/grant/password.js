@@ -1,16 +1,16 @@
-const { InvalidGrant } = require('oidc-provider/lib/helpers/errors')
-const presence = require('oidc-provider/lib/helpers/validate_presence')
-const filterClaims = require('oidc-provider/lib/helpers/filter_claims')
-const instance = require('oidc-provider/lib/helpers/weak_cache')
-const dpopValidate = require('oidc-provider/lib/helpers/validate_dpop')
-const resolveResource = require('oidc-provider/lib/helpers/resolve_resource')
-
 const Account = require('../../utils/account')
 
 const gty = 'password'
 const parameters = ['username', 'password', 'resource', 'scope']
 
 const handler = async function (ctx, next) {
+  const { InvalidGrant } = await import('oidc-provider/lib/helpers/errors.js')
+  const { default: presence } = await import('oidc-provider/lib/helpers/validate_presence.js')
+  const { default: filterClaims } = await import('oidc-provider/lib/helpers/filter_claims.js')
+  const { default: instance } = await import('oidc-provider/lib/helpers/weak_cache.js')
+  const { default: dpopValidate } = await import('oidc-provider/lib/helpers/validate_dpop.js')
+  const { default: resolveResource } = await import('oidc-provider/lib/helpers/resolve_resource.js')
+
   const {
     issueRefreshToken,
     conformIdTokenClaims,

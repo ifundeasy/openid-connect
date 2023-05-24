@@ -15,6 +15,16 @@ const grantable = new Set([
   'refresh_token',
   'device_code',
   'backchannel_authentication_request',
+
+  'session',
+  'client_credentials',
+  'client',
+  'initial_access_token',
+  'registration_access_token',
+  'interaction',
+  'replay_detection',
+  'pushed_authorization_request',
+  'grant'
 ]);
 
 class CollectionSet extends Set {

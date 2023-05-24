@@ -1,5 +1,5 @@
 const Router = require('koa-router')
-const koaBody = require('koa-body')
+const { koaBody } = require('koa-body')
 
 const {
   interaction,
@@ -13,13 +13,10 @@ const {
 
 const { onlyClient, noCache, bodyParser } = require('./middlewares')
 
-module.exports = (provider) => {
+module.exports = async (provider) => {
   const router = new Router()
-  const {
-    constructor: {
-      errors: { SessionNotFound },
-    },
-  } = provider
+
+  const { errors: { SessionNotFound } } = await import('oidc-provider');
 
   router.post('/registration', koaBody(), onlyClient(provider), registration)
   
